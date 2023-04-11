@@ -15,4 +15,5 @@ We provide individual examples, one for each approach (TD3-BC-N and SAC-BC-N).  
 ## Computational efficiency
 We provide examples of calculating computation time for 10,000 gradient updates for TD3-BC-N and SAC-BC-N.  Other algorithms can be tested by simply amending the import
 
-If you experience any problems, please raise an issue or pull request.
+## Feedback
+If you experience any problems or have any queries, please raise an issue or pull request.
