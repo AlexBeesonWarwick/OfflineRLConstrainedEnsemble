@@ -1,6 +1,6 @@
 # Balancing policy constraint and ensemble size in uncertainty-based offline reinforcement learning.
 
-This repository contains the code used to produce the results in our paper - https://arxiv.org/abs/2303.14716.
+This repository contains the code used to produce the results in our paper - https://link.springer.com/article/10.1007/s10994-023-06458-y.
 
 The algorithms used in the work can be found in the folder "Algorithms".
 
