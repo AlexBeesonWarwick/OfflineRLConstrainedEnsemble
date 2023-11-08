@@ -107,7 +107,7 @@ class Actor(nn.Module):
 
 
 class Agent():
-    def __init__(self, state_dim, action_dim, min_action, max_action, min_ent=0, num_critics=2, online_ft=None,
+    def __init__(self, state_dim, action_dim, min_action, max_action, min_ent=0, num_critics=2, eta=1.0,
                  batch_size=256, lr_actor=3e-4, lr_critic=3e-4, gamma=0.99, tau=0.005, device="cpu"):
 
         # Initialisation
@@ -119,8 +119,6 @@ class Agent():
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=lr_critic)
 
         self.log_alpha = torch.zeros(1, requires_grad=True, device=device)
-        if online_ft is not None:
-            self.log_alpha = torch.tensor([online_ft], requires_grad=True, device=device)
         self.alpha_optimizer = torch.optim.Adam([self.log_alpha], lr=lr_actor)
 
         # Record losses
@@ -135,6 +133,8 @@ class Agent():
         self.device = device
         self.max_action = max_action
         self.min_ent = min_ent
+        self.num_critics = num_critics
+        self.eta = eta
 
     def choose_action(self, state, mean=True):
         # Take mean/greedy action by default, but also allows sampling from policy
@@ -188,10 +188,10 @@ class Agent():
                 q_target -= (alpha * log_next_action)
                 q_hat = reward + self.gamma * (1 - done) * q_target
             q_values_all = self.critic(state, action)
-            critic_loss = F.mse_loss(q_values_all, q_hat)  # Ignore warning if using dependent targets - we want broadcasting
+            critic_loss = F.mse_loss(q_values_all, q_hat)  # Ignore warning - we want broadcasting
             diversity_loss = self._critic_diversity_loss(state, action)
 
-            critic_loss += diversity_loss
+            critic_loss += (self.eta / self.num_critics * diversity_loss) # Scale by num_critics as using F.mse_loss for critic loss above
 
             self.critic_loss_history.append(critic_loss.item())
             self.critic_optimizer.zero_grad()
@@ -202,7 +202,6 @@ class Agent():
             actions, log_actions = self.actor.sample_normal(state)
             critic_value = self.critic(state, actions).min(0)[0]
             critic_value -= (alpha * log_actions)
-            critic_value /= critic_value.abs().mean().detach()
             actor_loss = -critic_value.mean()
 
             self.actor_loss_history.append(actor_loss.item())
