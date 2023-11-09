@@ -13,7 +13,7 @@ We provide individual examples trained on the D4RL datasets, one for each domain
 We provide individual examples, one for each approach (TD3-BC-N and SAC-BC-N).  To fine-tune on a different dataset, replace the dataset names under the "Load environment" section of the code.  Remember to apply any data transformations to newly aquired interactions (e.g. state normalisation, reward scaling).
 
 ## Computational efficiency
-We provide examples of calculating computation time for 10,000 gradient updates for TD3-BC-N and SAC-BC-N.  Other algorithms can be tested by simply amending the import
+We provide examples of calculating computation time for 10,000 gradient updates for TD3-BC-N and SAC-BC-N.  Other algorithms can be tested by simply amending the import.
 
 ## Feedback
 If you experience any problems or have any queries, please raise an issue or pull request.
