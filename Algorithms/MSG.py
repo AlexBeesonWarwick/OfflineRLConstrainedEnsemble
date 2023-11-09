@@ -24,7 +24,7 @@ There are three versions that differ only in how they calculate the cql componen
     Agent_IS: This version uses importance sampling with only one sample.  This is optimized for a single sample by 
               reusing the action/log probability used in the actor loss.  A sample size of one is what is used in the 
               MSG paper (https://github.com/google-research/google-research/tree/master/jrl/agents/msg)
-    Agent_IS_Reps: This version uses importance sampling with user specified number of samples (reps).  Using a sample
+    Agent_IS_Rep: This version uses importance sampling with user specified number of samples (reps).  Using a sample
                   size of one is equivalent to Agent_IS but slightly less computationally efficient as an additional
                   action/log probability is sampled from the policy.  Obviously as the number of samples increases
                   so does the computation time.
@@ -314,7 +314,7 @@ class Agent_IS():
                 target_param.data.copy_(param.data * self.tau + target_param.data * (1.0 - self.tau))
 
 
-class Agent_IS_Reps():
+class Agent_IS_Rep():
     def __init__(self, state_dim, action_dim, min_action, max_action, min_ent=0, num_critics=2, alpha_prime=1, beta=-1,
                  batch_size=256, lr_actor=3e-4, lr_critic=3e-4, gamma=0.99, tau=0.005, reps=1, device="cpu"):
 
