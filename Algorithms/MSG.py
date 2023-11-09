@@ -24,7 +24,7 @@ There are three versions that differ only in how they calculate the cql componen
     Agent_IS: This version uses importance sampling with only one sample.  This is optimized for a single sample by 
               reusing the action/log probability used in the actor loss.  A sample size of one is what is used in the 
               MSG paper (https://github.com/google-research/google-research/tree/master/jrl/agents/msg)
-    Agent_IS_Rep: This version uses importance sampling with user specified number of samples (reps).  Using a sample
+    Agent_IS_Reps: This version uses importance sampling with user specified number of samples (reps).  Using a sample
                   size of one is equivalent to Agent_IS but slightly less computationally efficient as an additional
                   action/log probability is sampled from the policy.  Obviously as the number of samples increases
                   so does the computation time.
